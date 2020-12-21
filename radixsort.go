@@ -16,7 +16,8 @@ const mask = (1 << radix) - 1
 // qSortCutoff is when we bail out to a quicksort. It's changed to 1 for
 // certain tests so we can more easily exercise the radix sorting.  This was
 // around the break-even point in some sloppy tests.
-var qSortCutoff = 1 << 7
+// limit len(data)
+var qSortCutoff = 1 << 16
 
 const keyPanicMessage = "sort failed: Key and Less aren't consistent with each other"
 const keyUint64Help = " (for float data, sortutil Key functions may help resolve this)"
@@ -39,7 +40,7 @@ func ByUint64(data Uint64Interface) {
 		qSort(data, 0, l)
 		return
 	}
-	
+
 	shift := guessIntShift(data, l)
 	parallelSort(data, radixSortUint64, task{offs: int(shift), end: l})
 
